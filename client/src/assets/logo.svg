@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200" viewBox="0 0 800 200">
+  <!-- Red C -->
+  <text x="40" y="138" font-family="Arial, sans-serif" font-size="93" font-weight="bold" fill="#FF0000">C</text>
+  <!-- White text -->
+  <text x="102" y="135" font-family="Arial, sans-serif" font-size="87" font-weight="bold" fill="#FFFFFF">atchMyShow</text>
+</svg>
