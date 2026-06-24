@@ -28,7 +28,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Environment variants
+# Environment variant
 .env.local
 .env.development.local
 .env.test.local
