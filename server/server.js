@@ -27,6 +27,10 @@ app.use(clerkMiddleware());
 //API Routes 
 app.get('/', (req,res) => res.send('server is live'))
 
+app.get("/sanjana-debug-123", (req, res) => {
+  res.send("new deployment");
+});
+
 //app.use("/api/inngest", serve({ client: inngest, functions, }));
 
 app.listen(port, () => console.log(`server listening at port :${port}`));
