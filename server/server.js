@@ -6,6 +6,7 @@ import { clerkMiddleware } from '@clerk/express'
 import { serve } from "inngest/express";
 import { inngest, functions } from "./inngest/index.js"
 import showRouter from './routes/showRoutes.js';
+import bookingRouter from './routes/bookingRoutes.js';
 
 const app = express();
 const port = 3000;
@@ -16,22 +17,12 @@ await connectDB();
 
 app.use(express.json());
 app.use(cors());
-
-app.get("/api/test", (req, res) => {
-  res.send("API working");
-});
-
 app.use(clerkMiddleware());
 
 //API Routes 
 app.get('/', (req,res) => res.send('server is live'))
-
-app.get("/sanjana-debug-123", (req, res) => {
-  res.send("new deployment");
-});
-
 app.use("/api/inngest", serve({ client: inngest, functions, }));
-
 app.use('/api/show', showRouter);
+app.use('/api/booking', bookingRouter);
 
 app.listen(port, () => console.log(`server listening at port :${port}`));
