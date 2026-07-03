@@ -1,16 +1,17 @@
 import { clerkClient } from "@clerk/express";
 
-export const protectAdmin = async () =>{
-    try{
-        const {userId} = req.auth;
-        const user = await clerkClient.users.getUser(userId);
+export const protectAdmin = async (req, res, next) => {
+  try {
+    const { userId } = req.auth();
 
-        if(user.privateMetadata.role !== "admin"){  
-            return res.json({success:false , message:"You are not authorized to perform this action"})
-        }
-        next();
+    const user = await clerkClient.users.getUser(userId);
 
-    }catch(err){
-        return res.json({success:false , message:"You are not authorized to perform this action"})
+    if (user.privateMetadata.role !== "admin") {
+      return res.json({ success: false, message: "not authorized" });
     }
-}
+
+    next();
+  } catch (error) {
+    return res.json({ success: false, message: error.message });
+  }
+};
