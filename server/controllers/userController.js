@@ -23,7 +23,7 @@ export const getUserBookings = async (req, res) => {
 export const updateFavorite = async (req, res) => {
     try{
         const {movieId} = req.body;
-        const userId = req.auth.userId;
+        const userId = req.auth().userId;
 
         const user = await clerkClient.users.getUser(userId);
 
@@ -31,7 +31,7 @@ export const updateFavorite = async (req, res) => {
             user.privateMetadata.favorites = [];
         }
 
-        if(user.privateMetadata.favorites.includes(movieId)){
+        if(!user.privateMetadata.favorites.includes(movieId)){
             user.privateMetadata.favorites.push(movieId);
         }else{
             user.privateMetadata.favorites = user.privateMetadata.favorites.filter(item => item !== movieId);

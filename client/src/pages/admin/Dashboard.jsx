@@ -5,8 +5,12 @@ import Loading from '../../components/Loading';
 import Title from '../../components/admin/Title';
 import BlurCircle from '../../components/BlurCircle';
 import dateFormat from '../../lib/dateFormat';
+import { useAppContext } from '../../context/appContext';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
+
+    const {axios , getToken , user , img_base_url} = useAppContext()
 
   const currency = import.meta.env.VITE_CURRENCY
 
@@ -27,13 +31,25 @@ const Dashboard = () => {
   ]
 
   const fetchDashBoardData = async() =>{
-    setDashBoardData(dummyDashboardData)
-    setLoading(false)
+    try{
+      const {data} = await axios.get('/api/admin/dashboard' , {headers: {Authorization: `Bearer ${await getToken()}`}})
+
+      if(data.success){
+        setDashBoardData(data.dashboardData)
+        setLoading(false)
+      }else{
+        toast.error(data.message)
+      }
+    }catch(err){
+      toast.error('Error Fecthing dashboard data :' , error)
+    }
   }
 
   useEffect(() =>{
-    fetchDashBoardData();
-  },[]);
+    if(user){
+      fetchDashBoardData();
+    }
+  },[user]);
 
   return !loading ? (
     <>
@@ -58,7 +74,7 @@ const Dashboard = () => {
         <BlurCircle top ="100px" left="-10%"/>
         {dashboardData.activeShows.map((show) =>(
           <div key={show._id} className='w-55 rounded-lg overflow-hidden h-full pb-3 bg-primary/10 border-primary/20 hover:-translate-y-1 transition duration-300'>
-            <img src={show.movie.poster_path} alt="poster" className='h-60 w-full object-cover' />
+            <img src={img_base_url + show.movie.poster_path} alt="poster" className='h-60 w-full object-cover' />
             <p className='font-medium p-2 truncate'>{show.movie.title}</p>
             <div className='flex items-center justify-between px-2'>
               <p className='text-lg font-medium'>{currency} {show.showPrice}</p>

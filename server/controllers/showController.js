@@ -45,11 +45,11 @@ export const addShow = async (req,res) => {
                 overview : movieApiData.overview,
                 poster_path : movieApiData.poster_path,
                 backdrop_path : movieApiData.backdrop_path,
-                genres : movieApiData.genres.map(genre => genre.name),
-                casts : movieCreditData.cast.map(cast => cast.name),
+                genres : movieApiData.genres,
+                casts : movieCreditData.cast,
                 release_date : movieApiData.release_date,
                 original_language : movieApiData.original_language,
-                tag_line : movieApiData.tagline || " ",
+                tag_line : movieApiData.tagline || "",
                 vote_average : movieApiData.vote_average,
                 runtime : movieApiData.runtime
             }
