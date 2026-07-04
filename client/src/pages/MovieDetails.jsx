@@ -72,7 +72,7 @@ const MovieDetails = () => {
           <p className='text-gray-400 mt-2 text-sm leading-tight max-w-xl'>{show.movie.overview}</p>
           <p>
             {timeFormat(show.movie.runtime)} •{" "}
-            {show.movie.genres.join(", ")} •{" "}
+            {show.movie.genres.map((genre) => genre.name).join(", ")} •{" "}
             {show.movie.release_date.split("-")[0]}
           </p>
 

@@ -51,6 +51,7 @@ export const createBooking = async(req,res) =>{
         })
 
         showData.markModified("occupiedSeats");
+        
         await showData.save();
 
         //payment gateway - stripe
