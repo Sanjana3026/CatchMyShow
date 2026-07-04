@@ -1,6 +1,7 @@
 import Show from "../models/Shows.js";
 import Booking from "../models/Booking.js";
-import stripe, { Stripe } from "stripe";
+import stripe from "stripe";
+import { inngest } from "../inngest/index.js";
 
 // function to check availability of selected seats 
 
@@ -59,30 +60,38 @@ export const createBooking = async(req,res) =>{
         const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
 
         //creating line items for stripe 
-        const lineItems = [{
+        const line_items = [{
             price_data:{
-                currency: 'rs',
+                currency: 'sgd',
                 product_data:{
                     name:showData.movie.title
                 },
                 unit_amount: Math.floor(booking.amount) * 100
             },
             quantity: 1
-        }]
+        }];
 
         const session = await stripeInstance.checkout.sessions.create({
             success_url: `${origin}/loading/my-bookings`,
             cancel_url: `${origin}/my-bookings`,
-            line_items: lineItems,
+            line_items: line_items,
             mode:"payment",
             metadata:{
                 bookingId: booking._id.toString()
             },
-            expires_at: Math.floor(Date.now() /1000) +30 *60 //expires in 30 mins
-        })
+            expires_at: Math.floor(Date.now() /1000) + 30 * 60 ,  //expires in 30 mins
+        });
 
-        booking.paymentLink = session.url
-        await booking.save()
+        booking.paymentLink = session.url;
+        await booking.save();
+
+        // Run Inngest Scheduler Function to check payment status after 10 minutes
+        await inngest.send({
+            name: "app/checkpayment",
+            data: {
+                bookingId: booking._id.toString()
+            }
+        });
 
         res.json({success:true , url: session.url })
 
