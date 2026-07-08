@@ -89,6 +89,7 @@ const SeatLayout = () => {
 
             const {data} = await axios.post('/api/bookings/create' , {showId: selectedTime.showId , selectedSeats}, {headers: {authorization : `Bearer ${await getToken()}`}})
 
+            
             if(data.success){
                 window.location.href = data.url;
             }else{
