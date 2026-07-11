@@ -19,6 +19,9 @@ await connectDB();
 //stripe webhooks route
 app.use('/api/stripe', express.raw({type: 'application/json'}) , stripeWebhooks)
 
+//inngest
+app.use("/api/inngest", serve({ client: inngest, functions, }));
+
 //Middleware
 
 app.use(express.json());
@@ -27,7 +30,6 @@ app.use(clerkMiddleware());
 
 //API Routes 
 app.get('/', (req,res) => res.send('server is live'))
-app.use("/api/inngest", serve({ client: inngest, functions, }));
 app.use('/api/show', showRouter);
 app.use('/api/bookings', bookingRouter);
 app.use('/api/admin',adminRouter);
