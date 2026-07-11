@@ -123,7 +123,7 @@ const sendBookingConfirmationEmail = inngest.createFunction(
       .populate("user");
     
       await sendEmail({
-      to: task.user.email,
+      to: booking.user.email,
       subject: `Payment Confirmation: "${booking.show.movie.title}" booked!`,
       body: `<div style="font-family: Arial, sans-serif; line-height: 1.5;">
         <h2>Hi ${booking.user.name},</h2>

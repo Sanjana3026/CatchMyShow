@@ -54,7 +54,7 @@ export const stripeWebhooks = async (request, response) => {
           name: "app/show.booked",
           data: { bookingId },
         });
-
+ 
         break;
       }
 
